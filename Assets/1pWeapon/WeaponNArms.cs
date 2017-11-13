@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class WeaponNArms : MonoBehaviour {
 
-    public enum PlayerStates { aim, walk, stand, init, run, fastrun };
+    public enum PlayerStates {init, stand, run, aim, runaim};
     Animation anim;
-    public int a;
+    public float AimSlow;
+
     public static class Player {
         static public PlayerStates state;
         
@@ -16,15 +17,27 @@ public class WeaponNArms : MonoBehaviour {
     void Start () {
         Player.state = PlayerStates.init;
         anim = GetComponent<Animation>();
-        anim.Play("Idle");
+        //anim.Play("Aim");
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        //switch(p1.state)
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) {
 
-            anim.Play("Crouch2");
+        switch (Player.state) {
+            case PlayerStates.aim:
+                anim.Play("Aim");
+                Time.timeScale = 1 / AimSlow * 100;
+                break;
+            case PlayerStates.run:
+                anim.Play("Run");
+                Time.timeScale = 1;
+                break;
+            case PlayerStates.stand:
+                anim.Play("Crouch2");
+                break;
+
+
         }
+ 
 	}
 }
